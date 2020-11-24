@@ -3,15 +3,15 @@
 /* eslint-disable no-undef */
 
 
-function getDogImage(dogs) {
-  fetch(`https://dog.ceo/api/breeds/image/random/${dogs}`)
+function getDogImage(breed) {
+  fetch(`https://dog.ceo/api/breed/${breed}/images/random/1`)
     .then(response => response.json())
     .then(responseJson => 
       displayResults(responseJson))
     .catch(error => alert('Something went wrong. Try again later.'));
 }
 
-function displayResults(responseJson, dogs) {
+function displayResults(responseJson) {
   console.log(responseJson);
 
   for(let dog of responseJson.message){
@@ -21,38 +21,19 @@ function displayResults(responseJson, dogs) {
   
 }
 
-function getDogBreed(breed){
-  let dog = breed.toLowerCase();
-  const baseUrl = `https://dog.ceo/api/breed/${breed}/images/random`;
-
-  fetch(baseUrl).then((response)=>response.json()).then((json)=>{
-    if(json.code){
-      $('.breed').html(json.message);
-    }
-    else(
-      $('.breed').html('<img src=""')
-    )
-    console.log(breed);
-  })
-  .catch(err=>{
-    console.log(err);
-    $('.breed').html(err.message);
-  })
-}
-
 
 function watchForm() {
   $('form').submit(event => {
     event.preventDefault();
-    let dogs = $(event.currentTarget).find('input').val();
-    getDogImage(dogs);
+    let dogs = $('#breed').val();
+    let breed = dogs.toLowerCase();
+    getDogImage(breed);
   });
 }
 
 function main() {
   console.log('App loaded! Waiting for submit!');
   watchForm();
-  getDogBreed();
 }
 
 $(main);
